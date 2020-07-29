@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: local
+server:
+  port: 8882
+#  servlet:
+#    context-path: /combat/getway
+
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

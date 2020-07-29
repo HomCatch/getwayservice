@@ -1,0 +1,50 @@
+spring:
+  #springboot的应用名
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          # 服务名小写
+          lower-case-service-id: true
+#      routes:
+#        - id: mid-service
+#          # lb代表从注册中心获取服务，且已负载均衡方式转发
+#          uri: lb://combat-mid-service
+#          predicates:
+#            - Path= /mid/**
+#          # 加上StripPrefix=1，否则转发到后端服务时会带上consumer前缀
+#          filters:
+#            - StripPrefix=1
+#        - id: login-service
+#          # lb代表从注册中心获取服务，且已负载均衡方式转发
+#          uri: lb://combat-login-service
+#          predicates:
+#            - Path= /login/**
+#          # 加上StripPrefix=1，否则转发到后端服务时会带上consumer前缀
+#          filters:
+#            - StripPrefix=1
+  #mysql数据库配置
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/eif_getway?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false
+    username: root
+    password: 123456
+
+#eureka配置
+eureka:
+  instance:
+    prefer-ip-address: true
+    #客户端通过eureka.instance.lease-renewal-interval-in-seconds 每隔这个时间会主动心跳一次，默认值为30s，更新自己的状态。Eureka Server收到心跳后，会通知集群里的其它Eureka Server更新此实例的状态。
+    lease-renewal-interval-in-seconds: 8
+    #ease-expiration-duration-in-seconds 设置服务过期时间配置,超过这个时间没有接收到心跳EurekaServer就会将这个实例剔除，默认值是90，一般是lease-renewal-interval-in-seconds的3倍。
+    lease-expiration-duration-in-seconds: 24
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+      #fetch-registry要设置为true，消费端为了能快速响应服务请求会从Eureka Server拉取服务地址清单后缓存到本地（后面会增量获取），
+      fetch-registry: true
+      #定期的更新客户端的服务清单时间，设置8s更新一次
+      registry-fetch-interval-seconds: 8s
